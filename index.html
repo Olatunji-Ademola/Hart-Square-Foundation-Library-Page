@@ -5,10 +5,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Gentium+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Red+Hat+Text:ital,wght@0,300..700;1,300..700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <!-- make skeleton layout -->
+    <div id="wrapper">
+      <div id="search-section">
+        <div id="search-box">
+          <!-- <div id="icon"></div> -->
+          <input
+            id="search-input"
+            type="text"
+            placeholder="Search books, authors category..."
+          />
+          <div id="search-button">Search</div>
+        </div>
+        <!-- <hr /> -->
+        <div id="search-results">
+          <h2>Search Results for "potter"</h2>
+          <p>34 results found</p>
+        </div>
+      </div>
+      <!--  -->
+      <!-- <div id="wrap"> -->
+      <div id="main">
+        <div id="filter">
+          <div>Avalibility</div>
+          <div>Location</div>
+          <div>Category</div>
+        </div>
+        <main>
+          <div id="bookList">
+            <!-- add all books here -->
+          </div>
+          <div id="pagination">
+            <ul>
+              <li id="disable">&lt;</li>
+              <li id="selected">1</li>
+              <li>2</li>
+              <li>3</li>
+              <li id="ellipsis">...</li>
+              <li>80</li>
+              <li>&gt;</li>
+            </ul>
+          </div>
+        </main>
+      </div>
+    </div>
+    <!--  -->
+    <!-- </div> -->
   </body>
-  <script src="script.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <script type="module" src="app.js"></script>
 </html>

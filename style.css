@@ -1,3 +1,199 @@
-body {
-  background-color: red;
+:root {
+  --primary-color: 44, 56, 44;
+  --green-color: 98, 164, 0;
+  /* 0, 165, 68; */
+  --red-color: 255, 100, 103;
+  --background-color: 240 230 216; /* rgb(253, 251, 246); */
+  --search-section-width: 164px;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  font-family: "Red Hat Text", sans-serif;
+  font-weight: 400;
+  color: rgb(var(--primary-color));
+}
+
+#wrapper {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  height: calc-size(fit-content, size + var(--search-section-width));
+  background-color: rgb(var(--background-color));
+}
+/* Search Section */
+#search-section {
+  max-width: 1280px;
+  /* height: 80px; */
+  width: 100%;
+  background-color: rgb(var(--background-color));
+  border-bottom: 1px solid rgba(var(--primary-color), 20%);
+  position: fixed;
+  z-index: 10;
+}
+
+#search-box {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+#search-box > #icon {
+  width: 20px;
+}
+#search-input {
+  height: 30px;
+  width: 30%;
+  padding: 2px 10px;
+  outline: none;
+  /* background-color: none; */
+  border: 2px, solid rgba(var(--primary-color), 50%);
+  border-right-color: rgb(var(--primary-color));
+  background: none;
+  font-size: 17px;
+}
+#search-input:focus {
+  border-color: rgb(var(--primary-color));
+  /* border: 2px solid rgb(var(--primary-color)); */
+}
+#search-button {
+  cursor: pointer;
+  padding: 6px 25px;
+  color: white;
+  /* width: ; */
+  text-align: center;
+  background-color: rgb(var(--primary-color));
+  font-size: 17px;
+}
+#search-results {
+  padding: 0px 14px;
+}
+#search-results > h2 {
+  margin-top: 5px;
+  font-family: "Gentium Plus", serif;
+  font-weight: 600;
+  font-size: 26px;
+}
+#search-results > p {
+  margin: 10px 0px;
+}
+#search-section > hr {
+  border: none;
+  border-top: 1px solid rgba(var(--primary-color), 20%);
+  /* rgba(0, 0, 0, 0.1); */
+}
+/* Other */
+
+#main {
+  display: flex;
+  position: relative;
+  flex: 1;
+  height: fit-content;
+  max-width: 1280px;
+  justify-content: center;
+  transform: translateY(var(--search-section-width));
+}
+#filter {
+  width: 400px;
+  height: calc-size(100vh, size - var(--search-section-width) - 30px);
+  padding: 15px;
+  border-right: 1px solid rgba(var(--primary-color), 20%);
+  position: sticky;
+  top: 0;
+}
+/* Book List */
+main {
+  /* background-color: green; */
+  /*    border: 1px black solid; */
+  padding: 0px 20px;
+  width: 100%;
+  height: 100%;
+
+  background-color: rgb(24 0 230 216);
+}
+#pagination {
+  padding: 30px;
+  /* height: 10px; */
+  /* width: 100px; */
+  /* background-color: red; */
+
+  /* position: absolute; */
+  display: flex;
+  justify-content: center;
+}
+
+#pagination > ul > li {
+  display: inline-block;
+  text-align: center;
+  font-weight: 600;
+  width: 20px;
+  min-width: fit-content;
+  height: 20px;
+  padding: 10px;
+  font-size: 17px;
+  margin: 0px 2px;
+  border: 1px solid rgba(var(--primary-color), 40%);
+}
+#pagination > ul > li:hover:not(#disable, #ellipsis) {
+  background-color: rgb(var(--primary-color));
+  color: rgb(var(--background-color));
+  cursor: pointer;
+}
+#pagination > ul > #disable {
+  border: 1px solid rgba(var(--primary-color), 20%);
+  color: rgba(var(--primary-color), 20%);
+}
+#pagination > ul > #selected {
+  background-color: rgb(var(--primary-color));
+  color: rgb(var(--background-color));
+}
+#pagination > ul > #ellipsis {
+  border: none !important;
+  /* background-color: red; */
+}
+/* Books Section */
+.book {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px rgba(var(--primary-color), 20%) solid;
+  /* border-radius: 10px; */
+  padding: 20px;
+}
+.book > #data {
+  font-size: 16px;
+}
+.book > #data > * {
+  margin: 2px;
+}
+.book > #data > #title {
+  font-family: "Gentium Plus", serif;
+  font-size: 20px;
+  font-weight: 600;
+}
+.book > #data > #category {
+  width: fit-content;
+  padding: 6px;
+  margin: 10px 5px;
+  border-radius: 5px;
+  background-color: rgba(var(--primary-color), 5%);
+  font-size: 14px;
+}
+
+.book > .checked {
+  padding: 6px 12px;
+  border-radius: 5px;
+  height: fit-content;
+  font-size: 14px;
+  min-width: fit-content;
+  font-weight: 600;
+}
+
+.book > #checked-out {
+  background-color: rgba(var(--red-color), 0.15);
+  color: rgb(var(--red-color));
+}
+
+.book > #checked-in {
+  background-color: rgba(var(--green-color), 0.15);
+  color: rgb(var(--green-color));
 }
