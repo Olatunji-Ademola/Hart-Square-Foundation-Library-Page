@@ -18,15 +18,15 @@
     <div id="wrapper">
       <div id="search-section">
         <div id="search-box">
-          <div id="search-input-box">
+          <form id="search-input-box" onsubmit="event.preventDefault();">
             <div id="icon">aa</div>
             <input
               id="search-input"
               type="text"
               placeholder="Search books, author, category, catalog code..."
             />
-          </div>
-          <button id="search-button">Search</button>
+            <button id="search-button">Search</button>
+          </form>
         </div>
         <!-- <hr /> -->
         <div id="search-results">
@@ -41,21 +41,21 @@
           <!-- Availbility -->
           <section>
             <div>
-              <h3>Availbility</h3>
-              <ul>
-                <li>
-                  <input type="checkbox" name="Available" id="Available" />
-                  <p>Available Now (10)</p>
-                </li>
-                <li>
-                  <input type="checkbox" name="Available" id="CheckedOut" />
-                  <p>Checked Out (0)</p>
-                </li>
-              </ul>
+              <div>
+                <h3>Availbility</h3>
+                <ul id="availbility"></ul>
+              </div>
+              <!-- Location -->
+              <div>
+                <h3>Location</h3>
+                <ul id="location"></ul>
+              </div>
+              <!-- Category -->
+              <div>
+                <h3>Category</h3>
+                <ul id="category"></ul>
+              </div>
             </div>
-            <!--  -->
-            <!-- <div>Location</div>
-          <div>Category</div> -->
           </section>
 
           <button id="refined-search-button">Apply</button>

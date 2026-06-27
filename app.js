@@ -1,4 +1,8 @@
-import { getSheet, UpdateBookSearchResult } from "./modules.js";
+import {
+  getSheet,
+  PerformRefinedSearch,
+  UpdateBookSearchResult,
+} from "./modules.js";
 // import {
 //   get,
 //   set,
@@ -9,13 +13,14 @@ const searchIndex = new FlexSearch.Document({
   document: {
     id: "CatalogCode", // Ensure every book has a unique ID field
     index: ["Title", "Author", "Category", "CatalogCode"],
-    // tag: "Checked-Out",
   },
+  tokenize: "forward",
 });
 
 let GlobalBookData = [];
 let GlobalBookMapData;
 let BookSearchResult = [];
+let searchText = "";
 
 // get save data (indexDB)
 // const customStore = createStore("hart-square-library-database", "key-store");
@@ -48,7 +53,7 @@ let searchTextInput = document.getElementById("search-input");
 // get the search button
 let searchButton = document.getElementById("search-button");
 searchButton.onclick = function () {
-  let searchText = searchTextInput.value;
+  searchText = searchTextInput.value;
 
   if (!searchText) return;
   //search for the data
@@ -67,17 +72,49 @@ searchButton.onclick = function () {
   bookSearchKeys.forEach((element) => {
     BookSearchResult.push(GlobalBookMapData.get(element));
   });
-  // console.log("BookSearchResult", BookSearchResult);
 
-  UpdateBookSearchResult(BookSearchResult);
+  UpdateBookSearchResult(BookSearchResult, undefined, searchText);
 };
 
 // Refine Search
+const refinedSearchButton = document.getElementById("refined-search-button");
+const refineIsAvailableList = document.getElementById("availbility");
+const refineLocationList = document.getElementById("location");
+const refineCategoryList = document.getElementById("category");
 
-let refinedSearchButton = document.getElementById("refined-search-button");
+let activeFilters = {
+  location: [],
+  category: [],
+  isAvailable: [],
+};
+
+function getRefinedOption(parentElement) {
+  let refineResult = [];
+  let listElement = parentElement.getElementsByTagName("li");
+
+  for (let i = 0; i < listElement.length; i++) {
+    let checkboxInput = listElement[i].querySelector("input[type=checkbox]");
+    if (checkboxInput.checked) {
+      let refineValue = checkboxInput.getAttribute("data-refine-value");
+      refineResult.push(refineValue);
+    }
+  }
+  return refineResult;
+}
 refinedSearchButton.onclick = function () {
-  console.log("Ola is a boy");
+  activeFilters.isAvailable = getRefinedOption(refineIsAvailableList);
+  activeFilters.category = getRefinedOption(refineCategoryList);
+  activeFilters.location = getRefinedOption(refineLocationList);
 
-  let BookRefinedSearchResult = [];
-  // UpdateBookSearchResult(BookSearchResult, BookRefinedSearchResult);
+  let BookRefinedSearchResult = PerformRefinedSearch(
+    activeFilters,
+    BookSearchResult
+  );
+
+  UpdateBookSearchResult(
+    BookSearchResult,
+    BookRefinedSearchResult,
+    searchText,
+    false
+  );
 };

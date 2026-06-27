@@ -2,6 +2,13 @@ const sheetId = "11Ja5ovsM5C-sN1fpmwA64-R0ou4JEKkrnsjsPyVrQMg";
 const gid = "922758314";
 const url = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&gid=${gid}`;
 
+const searchAvailbility = document.getElementById("availbility");
+const searchLocation = document.getElementById("location");
+const searchCategory = document.getElementById("category");
+const searchResultsFoundText = document.querySelector("#search-results > p");
+const searchResultsText = document.querySelector("#search-results > h2");
+
+// console.log(searchResultsFoundText);
 const BookList = document.getElementById("bookList");
 const PaginationParentElemet = document.getElementById("paginationParent");
 const BookDisplayNumber = 10;
@@ -18,6 +25,18 @@ export async function getSheet() {
   }
 }
 
+function getPropertyCount(results, property) {
+  return results.reduce((acc, item) => {
+    // Get the value of the property (e.g., 'Downtown')
+    const key = item[property];
+
+    // If it doesn't exist in our map yet, set it to 0, then add 1
+    acc[key] = (acc[key] || 0) + 1;
+
+    return acc;
+  }, {});
+}
+
 function bookComponent(bookData) {
   if (!bookData) return;
   let component = `
@@ -29,8 +48,8 @@ function bookComponent(bookData) {
   <h4 id="Location">${bookData.Collection} -${bookData.CatalogCode}</h4>
 </div>
   <div class="checked" id="${
-    bookData["Checked-Out"] == "TRUE" ? "checked-out" : "checked-in"
-  }">${bookData["Checked-Out"] == "TRUE" ? "Checked-Out" : "Available"}</div>
+    bookData["IsAvailable"] == "TRUE" ? "checked-in" : "checked-out"
+  }">${bookData["IsAvailable"] == "TRUE" ? "Available" : "Checked-Out"}</div>
   </div>`;
   return component;
 }
@@ -77,6 +96,14 @@ function generatePagination(currentPage, totalPages) {
   return pagination;
 }
 
+//Show more details for the book
+
+// const urlParams = new URLSearchParams(window.location.search);
+
+// urlParams.set("bookCatalogCode", "ANT-0001");
+// const newUrl = window.location.pathname + "?" + urlParams.toString();
+// history.pushState(null, "", newUrl);
+
 // let refinedSearch;
 function DisplayPagination(pageIndex = 1) {
   // display the books
@@ -99,6 +126,8 @@ function DisplayPagination(pageIndex = 1) {
     bookListElement += bookComponent(bookData);
   }
   BookList.innerHTML = bookListElement;
+
+  //add show more book details
 
   // Update Pagination
   let paginationElemet = generatePagination(pageIndex, maxPageIndex)
@@ -136,20 +165,75 @@ function DisplayPagination(pageIndex = 1) {
   }
 }
 
+function refinedSearchElement(property, parent) {
+  // parent.innerHTML = "";
+  let elements = "";
+  for (const key in property) {
+    let isAvailableCondition = key == "TRUE" || key == "FALSE";
+    let name = isAvailableCondition
+      ? key == "TRUE"
+        ? "Available"
+        : "Checked Out"
+      : key;
+
+    elements += `<li>
+    <input checked type="checkbox" data-refine-value="${
+      isAvailableCondition ? key : name
+    }" />
+    <p>${name} (${property[key]})</p>
+    </li>`;
+  }
+
+  parent.innerHTML = elements;
+}
+
 export function UpdateBookSearchResult(
   searchBookResult,
-  searchBookRefinedResult
+  searchBookRefinedResult,
+  searchText,
+  updateRefineParameter = true
 ) {
   if (!searchBookResult) return;
   searchBookRefinedResult ||= searchBookResult;
   globalSearchBookRefinedResult = searchBookRefinedResult;
 
   // update search result terms and count
+  searchResultsText.textContent = searchText
+    ? `Search Results for "${searchText}"`
+    : "Total Books";
+  searchResultsFoundText.textContent = `${searchBookResult.length} results found`;
   // Refinded section
-  // get this form book data : categorise amount = {}, locations Amount = {}, availability Amount = {}
+
+  if (updateRefineParameter) {
+    let Location = getPropertyCount(searchBookResult, "Collection");
+    refinedSearchElement(Location, searchLocation);
+    let CheckedOut = getPropertyCount(searchBookResult, "IsAvailable");
+    refinedSearchElement(CheckedOut, searchAvailbility);
+    let Category = getPropertyCount(searchBookResult, "Category");
+    refinedSearchElement(Category, searchCategory);
+  }
+  // console.log("Category: \n", Category);
 
   // Display book list
   DisplayPagination(1);
+}
+
+export function PerformRefinedSearch(activeFilters, searchResults) {
+  return searchResults.filter((book) => {
+    const hasLocationMatch =
+      activeFilters.location.length > 0 &&
+      activeFilters.location.includes(book.Collection);
+
+    const hasCategoryMatch =
+      activeFilters.category.length > 0 &&
+      activeFilters.category.includes(book.Category);
+
+    const hasAvailabilityMatch =
+      activeFilters.isAvailable.length > 0 &&
+      activeFilters.isAvailable.includes(book.IsAvailable);
+
+    return hasLocationMatch && hasCategoryMatch && hasAvailabilityMatch;
+  });
 }
 
 //////
