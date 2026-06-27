@@ -18,13 +18,15 @@
     <div id="wrapper">
       <div id="search-section">
         <div id="search-box">
-          <!-- <div id="icon"></div> -->
-          <input
-            id="search-input"
-            type="text"
-            placeholder="Search books, authors category..."
-          />
-          <div id="search-button">Search</div>
+          <div id="search-input-box">
+            <div id="icon">aa</div>
+            <input
+              id="search-input"
+              type="text"
+              placeholder="Search books, author, category, catalog code..."
+            />
+          </div>
+          <button id="search-button">Search</button>
         </div>
         <!-- <hr /> -->
         <div id="search-results">
@@ -33,26 +35,38 @@
         </div>
       </div>
       <!--  -->
-      <!-- <div id="wrap"> -->
       <div id="main">
-        <div id="filter">
-          <div>Avalibility</div>
-          <div>Location</div>
-          <div>Category</div>
-        </div>
+        <aside id="filter">
+          <h3>Refine Results</h3>
+          <!-- Availbility -->
+          <section>
+            <div>
+              <h3>Availbility</h3>
+              <ul>
+                <li>
+                  <input type="checkbox" name="Available" id="Available" />
+                  <p>Available Now (10)</p>
+                </li>
+                <li>
+                  <input type="checkbox" name="Available" id="CheckedOut" />
+                  <p>Checked Out (0)</p>
+                </li>
+              </ul>
+            </div>
+            <!--  -->
+            <!-- <div>Location</div>
+          <div>Category</div> -->
+          </section>
+
+          <button id="refined-search-button">Apply</button>
+        </aside>
         <main>
           <div id="bookList">
             <!-- add all books here -->
           </div>
           <div id="pagination">
-            <ul>
-              <li id="disable">&lt;</li>
-              <li id="selected">1</li>
-              <li>2</li>
-              <li>3</li>
-              <li id="ellipsis">...</li>
-              <li>80</li>
-              <li>&gt;</li>
+            <ul id="paginationParent">
+              <!-- add all books pagination here -->
             </ul>
           </div>
         </main>
@@ -63,5 +77,8 @@
   </body>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/flexsearch@0.7.31/dist/flexsearch.bundle.min.js"></script> -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FlexSearch/0.7.31/flexsearch.bundle.min.js"></script>
   <script type="module" src="app.js"></script>
 </html>

@@ -1,10 +1,9 @@
 :root {
   --primary-color: 44, 56, 44;
   --green-color: 98, 164, 0;
-  /* 0, 165, 68; */
   --red-color: 255, 100, 103;
   --background-color: 240 230 216; /* rgb(253, 251, 246); */
-  --search-section-width: 164px;
+  --search-section-width: 133px;
 }
 
 * {
@@ -25,7 +24,6 @@
 /* Search Section */
 #search-section {
   max-width: 1280px;
-  /* height: 80px; */
   width: 100%;
   background-color: rgb(var(--background-color));
   border-bottom: 1px solid rgba(var(--primary-color), 20%);
@@ -38,44 +36,62 @@
   justify-content: center;
   padding: 20px;
 }
-#search-box > #icon {
+#search-box > #search-input-box {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background-color: rgba(var(--primary-color), 10%);
+  border: 1px solid #0000;
+}
+#search-input-box > #icon {
+  margin: 0px 10px;
+  height: fit-content;
   width: 20px;
+  background-color: rgb(var(--primary-color));
+}
+#search-input-box:focus-within {
+  border: 1px solid rgba(var(--primary-color)) !important;
 }
 #search-input {
-  height: 30px;
-  width: 30%;
+  height: 40px;
+  flex: 1;
   padding: 2px 10px;
   outline: none;
-  /* background-color: none; */
-  border: 2px, solid rgba(var(--primary-color), 50%);
-  border-right-color: rgb(var(--primary-color));
+  background-color: none;
+  border: none;
   background: none;
   font-size: 17px;
 }
 #search-input:focus {
   border-color: rgb(var(--primary-color));
-  /* border: 2px solid rgb(var(--primary-color)); */
 }
 #search-button {
   cursor: pointer;
-  padding: 6px 25px;
-  color: white;
-  /* width: ; */
-  text-align: center;
+  padding: 0px 30px;
+  color: rgb(var(--background-color));
+  border-style: none;
   background-color: rgb(var(--primary-color));
   font-size: 17px;
 }
 #search-results {
   padding: 0px 14px;
+  display: flex;
+  gap: 20px;
+  align-items: center;
 }
 #search-results > h2 {
-  margin-top: 5px;
+  /* margin-top: 5px; */
   font-family: "Gentium Plus", serif;
   font-weight: 600;
   font-size: 26px;
 }
 #search-results > p {
   margin: 10px 0px;
+  background-color: rgba(var(--primary-color), 10%);
+  padding: 4px 15px;
+  font-size: 14px;
+  width: fit-content;
+  border-radius: 10px;
 }
 #search-section > hr {
   border: none;
@@ -94,7 +110,7 @@
   transform: translateY(var(--search-section-width));
 }
 #filter {
-  width: 400px;
+  width: 300px;
   height: calc-size(100vh, size - var(--search-section-width) - 30px);
   padding: 15px;
   border-right: 1px solid rgba(var(--primary-color), 20%);
@@ -123,6 +139,7 @@ main {
 }
 
 #pagination > ul > li {
+  user-select: none;
   display: inline-block;
   text-align: center;
   font-weight: 600;
@@ -149,7 +166,6 @@ main {
 }
 #pagination > ul > #ellipsis {
   border: none !important;
-  /* background-color: red; */
 }
 /* Books Section */
 .book {

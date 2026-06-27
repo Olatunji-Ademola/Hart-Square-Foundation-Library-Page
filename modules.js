@@ -1,10 +1,13 @@
 const sheetId = "11Ja5ovsM5C-sN1fpmwA64-R0ou4JEKkrnsjsPyVrQMg";
 const gid = "922758314";
 const url = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&gid=${gid}`;
-const BookList = document.getElementById("bookList");
-console.log(BookList);
 
-async function getSheet() {
+const BookList = document.getElementById("bookList");
+const PaginationParentElemet = document.getElementById("paginationParent");
+const BookDisplayNumber = 10;
+let globalSearchBookRefinedResult = [];
+
+export async function getSheet() {
   try {
     let result = await fetch(url);
     let csvText = await result.text();
@@ -17,7 +20,6 @@ async function getSheet() {
 
 function bookComponent(bookData) {
   if (!bookData) return;
-
   let component = `
   <div class="book">
   <div id="data">
@@ -33,21 +35,121 @@ function bookComponent(bookData) {
   return component;
 }
 
-export async function updateBooklist() {
-  let data = await getSheet();
-
-  for (let i = 0; i < 8; i++) {
-    const bookData = data[i];
-
-    let component = bookComponent(bookData);
-    BookList.innerHTML += component;
-
-    // console.log(i, component);
+function generatePagination(currentPage, totalPages) {
+  // If total pages are 7 or fewer, just return all pages sequentially
+  if (totalPages <= 7) {
+    let pagination = Array.from({ length: totalPages }, (_, i) => i + 1);
+    pagination.unshift("<");
+    pagination.push(">");
+    return pagination;
   }
 
-  // overwrite the elements in the book Result list
+  const pagination = [];
 
-  return data;
+  // Determine if we need ellipses on the left or right
+  const showLeftDots = currentPage > 4;
+  const showRightDots = currentPage < totalPages - 3;
+
+  if (!showLeftDots && showRightDots) {
+    for (let i = 1; i <= 5; i++) {
+      pagination.push(i);
+    }
+    pagination.push("...");
+    pagination.push(totalPages);
+  } else if (showLeftDots && !showRightDots) {
+    pagination.push(1);
+    pagination.push("...");
+    for (let i = totalPages - 4; i <= totalPages; i++) {
+      pagination.push(i);
+    }
+  } else {
+    pagination.push(1);
+    pagination.push("...");
+    pagination.push(currentPage - 1);
+    pagination.push(currentPage);
+    pagination.push(currentPage + 1);
+    pagination.push("...");
+    pagination.push(totalPages);
+  }
+
+  pagination.unshift("<");
+  pagination.push(">");
+  return pagination;
+}
+
+// let refinedSearch;
+function DisplayPagination(pageIndex = 1) {
+  // display the books
+  let booksData = globalSearchBookRefinedResult;
+  let bookElement = booksData.length;
+  let maxPageIndex = Math.ceil(bookElement / BookDisplayNumber);
+
+  // if the pageIndex is greater then the maxPageIndex, set it to the maxPageIndex
+  pageIndex = pageIndex > maxPageIndex ? maxPageIndex : pageIndex;
+  // if the pageIndex is less then 0, set it to 1
+  pageIndex = pageIndex < 1 ? 1 : pageIndex;
+
+  // add books to the book list
+  let bookDisplayEnd = BookDisplayNumber * pageIndex;
+  let bookDisplayStart = bookDisplayEnd - BookDisplayNumber;
+  let bookListElement = "";
+  for (let i = bookDisplayStart; i < bookDisplayEnd; i++) {
+    const bookData = booksData[i];
+    if (!bookData) break;
+    bookListElement += bookComponent(bookData);
+  }
+  BookList.innerHTML = bookListElement;
+
+  // Update Pagination
+  let paginationElemet = generatePagination(pageIndex, maxPageIndex)
+    .map((item) => {
+      if (item === "<")
+        return `<li ${
+          pageIndex == 1 ? "id=disable" : `data-pageIndex=${pageIndex - 1}`
+        } >&lt;</li>`;
+      if (item === ">")
+        return `<li ${
+          pageIndex == maxPageIndex
+            ? "id=disable"
+            : `data-pageIndex=${pageIndex + 1}`
+        }>&gt;</li>`;
+      if (item === "...") return `<li id="ellipsis">...</li>`;
+      if (item === pageIndex) return `<li id="selected">${item}</li>`;
+
+      return `<li data-pageIndex=${item}>${item}</li>`;
+    })
+    .join("");
+
+  // add the pagination elemets to the page
+  PaginationParentElemet.innerHTML = paginationElemet;
+  let PaginationElementList = PaginationParentElemet.getElementsByTagName("li");
+
+  // connect the click event to the pagination elemets
+  for (let i = 0; i < PaginationElementList.length; i++) {
+    const element = PaginationElementList[i];
+    let goToPageIndex = element.getAttribute("data-pageIndex");
+    if (goToPageIndex) {
+      element.addEventListener("click", () => {
+        DisplayPagination(parseInt(goToPageIndex));
+      });
+    }
+  }
+}
+
+export function UpdateBookSearchResult(
+  searchBookResult,
+  searchBookRefinedResult
+) {
+  if (!searchBookResult) return;
+  searchBookRefinedResult ||= searchBookResult;
+  globalSearchBookRefinedResult = searchBookRefinedResult;
+
+  // update search result terms and count
+  // Refinded section
+  // get this form book data : categorise amount = {}, locations Amount = {}, availability Amount = {}
+
+  // Display book list
+  DisplayPagination(1);
 }
 
 //////
