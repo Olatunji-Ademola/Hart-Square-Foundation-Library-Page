@@ -1,7 +1,30 @@
+const urlParams = new URLSearchParams(window.location.search);
+
 const sheetId = "11Ja5ovsM5C-sN1fpmwA64-R0ou4JEKkrnsjsPyVrQMg";
 const gid = "922758314";
 const url = `https://docs.google.com/spreadsheets/d/${sheetId}/export?format=csv&gid=${gid}`;
 
+// pages
+const detailsPage = document.getElementById("book-details-page");
+const searchPage = document.getElementById("book-search-page");
+
+// details page
+const shareBookButton = document.getElementById("share-button");
+const backToResultButton = document.getElementById("back-button");
+const detailsTitle = document.getElementById("d-title");
+const detailsAuthor = document.getElementById("d-author");
+const detailsIsAvaliable = document.getElementById("d-isAvailable");
+const detailsLocation = document.getElementById("d-location");
+const detailsCategory = document.getElementById("d-category");
+const detailsCatalogCode = document.getElementById("d-catalog-code");
+const detailsDonor = document.getElementById("d-donor");
+const detailsCondition = document.getElementById("d-condition");
+const detailsLocationLocation = document.getElementById("d-l-location");
+const detailsLocationSection = document.getElementById("d-l-section");
+const detailsDescription = document.getElementById("d-description");
+const detailsRelatedBooks = document.getElementById("d-related-books");
+
+// search page
 const searchAvailbility = document.getElementById("availbility");
 const searchLocation = document.getElementById("location");
 const searchCategory = document.getElementById("category");
@@ -12,18 +35,10 @@ const searchResultsText = document.querySelector("#search-results > h2");
 const BookList = document.getElementById("bookList");
 const PaginationParentElemet = document.getElementById("paginationParent");
 const BookDisplayNumber = 10;
-let globalSearchBookRefinedResult = [];
 
-export async function getSheet() {
-  try {
-    let result = await fetch(url);
-    let csvText = await result.text();
-    let data = Papa.parse(csvText, { header: true }).data;
-    return data;
-  } catch (error) {
-    console.error("Error fetching sheet:", error);
-  }
-}
+let GlobalBookData = [];
+let globalSearchBookRefinedResult = [];
+let GlobalBookMapData;
 
 function getPropertyCount(results, property) {
   return results.reduce((acc, item) => {
@@ -42,13 +57,15 @@ function bookComponent(bookData) {
   let component = `
   <div class="book">
   <div id="data">
-  <h3 id="title">${bookData.Title}</h3>
+  <h3 id="title" data-catalogcode="${bookData.CatalogCode}" >${
+    bookData.Title
+  }</h3>
   <h4 id="author">${bookData.Author}</h4>
   <h4 id="category">${bookData.Category}</h4>
-  <h4 id="Location">${bookData.Collection} -${bookData.CatalogCode}</h4>
+  <h4 id="Location">${bookData.Collection} - ${bookData.CatalogCode}</h4>
 </div>
-  <div class="checked" id="${
-    bookData["IsAvailable"] == "TRUE" ? "checked-in" : "checked-out"
+  <div class="checked ${
+    bookData["IsAvailable"] == "TRUE" ? `checked-in` : "checked-out"
   }">${bookData["IsAvailable"] == "TRUE" ? "Available" : "Checked-Out"}</div>
   </div>`;
   return component;
@@ -96,14 +113,25 @@ function generatePagination(currentPage, totalPages) {
   return pagination;
 }
 
-//Show more details for the book
+function handelShowBookDetailsPage(BookList, tag) {
+  const Titles = BookList.getElementsByTagName(tag);
 
-// const urlParams = new URLSearchParams(window.location.search);
+  for (let i = 0; i < Titles.length; i++) {
+    let title = Titles[i];
+    let bookCode = title.getAttribute("data-catalogcode");
 
-// urlParams.set("bookCatalogCode", "ANT-0001");
-// const newUrl = window.location.pathname + "?" + urlParams.toString();
-// history.pushState(null, "", newUrl);
+    console.log("Titles", tag, bookCode);
+    if (bookCode) {
+      title.addEventListener("click", () => {
+        urlParams.set("bookCatalogCode", bookCode);
+        const newUrl = window.location.pathname + "?" + urlParams.toString();
+        history.pushState(null, "", newUrl);
 
+        ShowBookDetailsPage();
+      });
+    }
+  }
+}
 // let refinedSearch;
 function DisplayPagination(pageIndex = 1) {
   // display the books
@@ -127,7 +155,8 @@ function DisplayPagination(pageIndex = 1) {
   }
   BookList.innerHTML = bookListElement;
 
-  //add show more book details
+  //Show more details for the book
+  handelShowBookDetailsPage(BookList, "h3");
 
   // Update Pagination
   let paginationElemet = generatePagination(pageIndex, maxPageIndex)
@@ -186,6 +215,17 @@ function refinedSearchElement(property, parent) {
 
   parent.innerHTML = elements;
 }
+export async function getSheet() {
+  try {
+    let result = await fetch(url);
+    let csvText = await result.text();
+    let data = Papa.parse(csvText, { header: true }).data;
+    GlobalBookData = data;
+    return data;
+  } catch (error) {
+    console.error("Error fetching sheet:", error);
+  }
+}
 
 export function UpdateBookSearchResult(
   searchBookResult,
@@ -212,7 +252,6 @@ export function UpdateBookSearchResult(
     let Category = getPropertyCount(searchBookResult, "Category");
     refinedSearchElement(Category, searchCategory);
   }
-  // console.log("Category: \n", Category);
 
   // Display book list
   DisplayPagination(1);
@@ -236,38 +275,90 @@ export function PerformRefinedSearch(activeFilters, searchResults) {
   });
 }
 
-//////
-const APPS_SCRIPT_WEBAPP_URL =
-  "https://script.google.com/macros/s/AKfycbx3hs4VLQ04kNQFiygqoEyBBEA5oTI6j0YB0pZnDfO2TQwUxvBqZ9J55qRnol86jLn0/exec";
+export function ShowBookDetailsPage(BookMapData) {
+  if (BookMapData) GlobalBookMapData = BookMapData;
+  if (!GlobalBookMapData) return;
 
-async function getSheetTimestamp() {
-  try {
-    const response = await fetch(APPS_SCRIPT_WEBAPP_URL);
+  const params = new URLSearchParams(window.location.search);
+  const bookCode = params.get("bookCatalogCode");
+  if (bookCode) {
+    let bookData = GlobalBookMapData.get(bookCode);
 
-    if (!response.ok) throw new Error("Failed to contact Google Script");
+    // Open details page and disable the search page
+    detailsPage.classList.remove("disablePage");
+    searchPage.classList.add("disablePage");
 
-    const data = await response.json();
+    // Update the detail page with the book data
+    // header details (title, author, isAvailable)
+    detailsTitle.innerText = bookData.Title;
+    detailsAuthor.innerText = bookData.Author;
+    detailsIsAvaliable.className =
+      bookData.IsAvailable == "TRUE" ? "checked-in" : "checked-out";
+    detailsIsAvaliable.innerHTML =
+      bookData.IsAvailable == "TRUE" ? `Avaliable` : "Checked Out";
 
-    if (data.error) {
-      console.error("Apps Script Error:", data.error);
-      return null;
+    // more details (location, category, catalog code, donor, condition, description)
+    detailsLocation.innerText = bookData.Collection;
+    detailsCategory.innerText = bookData.Category;
+    detailsCatalogCode.innerText = bookData.CatalogCode;
+    detailsDonor.innerText = bookData.Donor;
+    detailsCondition.innerText = bookData.Condition;
+    detailsDescription.innerText = bookData.Notes;
+
+    // location
+    detailsLocationLocation.innerHTML = bookData.Collection;
+    detailsLocationSection.innerText = bookData.Category;
+
+    //fill up the related books based on category and collection (location)
+    let activeFilters = {
+      location: ["Main Library", "Children's Library", "Audio Library"],
+      category: [bookData.Category],
+      isAvailable: ["TRUE", "FALSE"],
+    };
+    // at most 5 related books
+    const allRelatedBooks = PerformRefinedSearch(activeFilters, GlobalBookData);
+    let relatedBooks = [];
+    let i = 0;
+    while (relatedBooks.length < 5) {
+      if (i == allRelatedBooks.length) break;
+      if (allRelatedBooks[i].CatalogCode != bookCode)
+        relatedBooks.push(allRelatedBooks[i]);
+      i++;
     }
-
-    // This variable now holds your ISO string timestamp
-    const rawTimestamp = data.lastModified;
-    console.log("Raw timestamp fetched:", rawTimestamp);
-
-    // Convert it to a native JS Date object to use in your logic
-    const lastModifiedDate = new Date(rawTimestamp);
-
-    // Example logic execution:
-    // doSomethingWithTime(lastModifiedDate);
-    return lastModifiedDate;
-  } catch (error) {
-    console.error("Fetch request execution failed:", error);
-    return null;
+    // Display all related books
+    let relatedBooksElement = "";
+    for (let i = 0; i < relatedBooks.length; i++) {
+      relatedBooksElement += `<li data-catalogcode=${relatedBooks[i].CatalogCode}>
+      <p>${relatedBooks[i].Category}</p>
+      <h3>${relatedBooks[i].Title}</h3>
+      <h4>by ${relatedBooks[i].Author}</h4>
+    </li>`;
+    }
+    detailsRelatedBooks.innerHTML = relatedBooksElement;
+    handelShowBookDetailsPage(detailsRelatedBooks, "li");
+  } else {
+    // enable the search page and disables thes details page
+    searchPage.classList.remove("disablePage");
+    detailsPage.classList.add("disablePage");
   }
 }
 
-// Execute the fetch
-//    getSheetTimestamp();
+backToResultButton.addEventListener("click", () => {
+  const newUrl = window.location.pathname;
+  window.history.pushState(null, "", newUrl);
+
+  ShowBookDetailsPage();
+});
+
+shareBookButton.addEventListener("click", async () => {
+  try {
+    //TODO title and text;
+    await navigator.share({
+      title: document.title,
+      text: "Check out this awesome page!",
+      url: window.location.href,
+    });
+  } catch (err) {
+    console.warn(err);
+  }
+});

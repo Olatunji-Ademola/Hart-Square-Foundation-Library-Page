@@ -16,69 +16,169 @@
   <body>
     <!-- make skeleton layout -->
     <div id="wrapper">
-      <div id="search-section">
-        <div id="search-box">
-          <form id="search-input-box" onsubmit="event.preventDefault();">
-            <div id="icon">aa</div>
-            <input
-              id="search-input"
-              type="text"
-              placeholder="Search books, author, category, catalog code..."
-            />
-            <button id="search-button">Search</button>
-          </form>
-        </div>
-        <!-- <hr /> -->
-        <div id="search-results">
-          <h2>Search Results for "potter"</h2>
-          <p>34 results found</p>
-        </div>
-      </div>
-      <!--  -->
-      <div id="main">
-        <aside id="filter">
-          <h3>Refine Results</h3>
-          <!-- Availbility -->
-          <section>
-            <div>
-              <div>
-                <h3>Availbility</h3>
-                <ul id="availbility"></ul>
-              </div>
-              <!-- Location -->
-              <div>
-                <h3>Location</h3>
-                <ul id="location"></ul>
-              </div>
-              <!-- Category -->
-              <div>
-                <h3>Category</h3>
-                <ul id="category"></ul>
+      <!-- Details Page -->
+      <div id="book-details-page" class="disablePage">
+        <div>
+          <!-- header -->
+          <div id="header">
+            <span id="back-button"><p>Back to results</p></span>
+            <span id="share-button"><p>Share</p></span>
+          </div>
+          <!-- details books section -->
+          <div>
+            <div id="title-author">
+              <h2 id="d-title">A Complete Guide to Pressed Glass</h2>
+              <h3 id="d-author">by Bob H. Batty</h3>
+              <div id="d-isAvailable" class="checked-out"><p>Availlabe</p></div>
+            </div>
+            <!-- more details -->
+            <div id="more-details">
+              <table>
+                <tbody>
+                  <tr>
+                    <td>Location</td>
+                    <td id="d-location">Main Library</td>
+                  </tr>
+                  <tr>
+                    <td>Category</td>
+                    <td id="d-category">Antiques & Collectibles</td>
+                  </tr>
+                  <tr>
+                    <td>Catalog Code</td>
+                    <td id="d-catalog-code">ANT-0001</td>
+                  </tr>
+                  <tr>
+                    <td>Donor</td>
+                    <td id="d-donor">----</td>
+                  </tr>
+                  <tr>
+                    <td>Condition</td>
+                    <td id="d-condition">Good</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <!-- location -->
+              <div id="to-find">
+                <h2>Where to Find it</h2>
+                <div>
+                  <h3>Location</h3>
+                  <p id="d-l-location">Main Library</p>
+                  <h3>Section</h3>
+                  <p id="d-l-section">Antiques & Collectibles</p>
+                </div>
               </div>
             </div>
-          </section>
-
-          <button id="refined-search-button">Apply</button>
-        </aside>
-        <main>
-          <div id="bookList">
-            <!-- add all books here -->
+            <!-- about book -->
+            <div id="description">
+              <h3>Description:</h3>
+              <p id="d-description">
+                Collector's reference to identification, history, and values of
+                pressed glass.
+              </p>
+            </div>
           </div>
-          <div id="pagination">
-            <ul id="paginationParent">
-              <!-- add all books pagination here -->
+          <!-- related books section -->
+          <div id="related-books">
+            <h3>Related Books</h3>
+            <ul id="d-related-books">
+              <!-- <li>
+                <p>Antiques & Collectibles</p>
+                <h3>The Title of the Book</h3>
+                <h4>by O. Ademola</h4>
+              </li>
+              <li>
+                <p>Antiques & Collectibles</p>
+                <h3>
+                  American and English Furniture and Decorations... (Brunk
+                  Auction Catalog, Jan. 2002)
+                </h3>
+                <h4>by O. Ademola</h4>
+              </li>
+              <li>
+                <p>Antiques & Collectibles</p>
+                <h3>The Title of the Book</h3>
+                <h4>by O. Ademola</h4>
+              </li>
+              <li>
+                <p>Antiques & Collectibles</p>
+                <h3>The Title of the Book</h3>
+                <h4>by O. Ademola</h4>
+              </li>
+              <li>
+                <p>Antiques & Collectibles</p>
+                <h3>The Title of the Book</h3>
+                <h4>by O. Ademola</h4>
+              </li> -->
             </ul>
           </div>
-        </main>
+        </div>
+      </div>
+      <!----------------->
+      <!-- Search Page -->
+      <div id="book-search-page">
+        <!-- searchbar section -->
+        <div id="search-section">
+          <div id="search-box">
+            <form id="search-input-box" onsubmit="event.preventDefault();">
+              <div id="icon">aa</div>
+              <input
+                id="search-input"
+                type="text"
+                placeholder="Search books, author, category, catalog code..."
+              />
+              <button id="search-button">Search</button>
+            </form>
+          </div>
+          <div id="search-results">
+            <h2>Search Results for "potter"</h2>
+            <p>34 results found</p>
+          </div>
+        </div>
+        <!-- main books section -->
+        <div id="main">
+          <!-- refine search result -->
+          <aside id="filter">
+            <h3>Refine Results</h3>
+            <section>
+              <div>
+                <!-- Availbility -->
+                <div>
+                  <h3>Availbility</h3>
+                  <ul id="availbility"></ul>
+                </div>
+                <!-- Location -->
+                <div>
+                  <h3>Location</h3>
+                  <ul id="location"></ul>
+                </div>
+                <!-- Category -->
+                <div>
+                  <h3>Category</h3>
+                  <ul id="category"></ul>
+                </div>
+              </div>
+            </section>
+            <button id="refined-search-button">Apply</button>
+          </aside>
+          <!-- books display section -->
+          <main>
+            <div id="bookList">
+              <!-- add all books here -->
+            </div>
+            <div id="pagination">
+              <ul id="paginationParent">
+                <!-- add all books pagination here -->
+              </ul>
+            </div>
+          </main>
+        </div>
       </div>
     </div>
-    <!--  -->
-    <!-- </div> -->
   </body>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
   <!-- <script src="https://cdn.jsdelivr.net/npm/flexsearch@0.7.31/dist/flexsearch.bundle.min.js"></script> -->
-
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FlexSearch/0.7.31/flexsearch.bundle.min.js"></script>
   <script type="module" src="app.js"></script>
 </html>

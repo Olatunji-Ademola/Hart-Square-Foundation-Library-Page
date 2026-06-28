@@ -2,6 +2,7 @@ import {
   getSheet,
   PerformRefinedSearch,
   UpdateBookSearchResult,
+  ShowBookDetailsPage,
 } from "./modules.js";
 // import {
 //   get,
@@ -45,6 +46,9 @@ if (lastUpdated) {
   // Update BookSearchResult and UI
   BookSearchResult = GlobalBookData;
   UpdateBookSearchResult(BookSearchResult);
+
+  // opem book details page on load
+  ShowBookDetailsPage(GlobalBookMapData);
 }
 
 // Search Query
@@ -118,3 +122,8 @@ refinedSearchButton.onclick = function () {
     false
   );
 };
+
+// On Navigate pen book detail page
+window.addEventListener("popstate", function () {
+  ShowBookDetailsPage();
+});
