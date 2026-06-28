@@ -57,9 +57,10 @@ function bookComponent(bookData) {
   let component = `
   <div class="book">
   <div id="data">
-  <h3 id="title" data-catalogcode="${bookData.CatalogCode}" >${
-    bookData.Title
-  }</h3>
+  <div id="title">
+  <i class="fa-solid fa-book"></i>
+  <h3  data-catalogcode="${bookData.CatalogCode}" >${bookData.Title}</h3>
+  </div>
   <h4 id="author">${bookData.Author}</h4>
   <h4 id="category">${bookData.Category}</h4>
   <h4 id="Location">${bookData.Collection} - ${bookData.CatalogCode}</h4>
@@ -120,7 +121,6 @@ function handelShowBookDetailsPage(BookList, tag) {
     let title = Titles[i];
     let bookCode = title.getAttribute("data-catalogcode");
 
-    console.log("Titles", tag, bookCode);
     if (bookCode) {
       title.addEventListener("click", () => {
         urlParams.set("bookCatalogCode", bookCode);
@@ -295,7 +295,11 @@ export function ShowBookDetailsPage(BookMapData) {
     detailsIsAvaliable.className =
       bookData.IsAvailable == "TRUE" ? "checked-in" : "checked-out";
     detailsIsAvaliable.innerHTML =
-      bookData.IsAvailable == "TRUE" ? `Avaliable` : "Checked Out";
+      bookData.IsAvailable == "TRUE"
+        ? `<i class="fa-regular fa-circle-check"></i>
+      <p>Available</p>`
+        : `<i class="fa-regular fa-circle-xmark"></i>
+        <p>Checked Out</p>`;
 
     // more details (location, category, catalog code, donor, condition, description)
     detailsLocation.innerText = bookData.Collection;
@@ -352,10 +356,14 @@ backToResultButton.addEventListener("click", () => {
 
 shareBookButton.addEventListener("click", async () => {
   try {
-    //TODO title and text;
+    const params = new URLSearchParams(window.location.search);
+    const bookCode = params.get("bookCatalogCode");
+    if (!bookCode) return;
+    let bookTitle = GlobalBookMapData.get(bookCode).Title;
+
     await navigator.share({
-      title: document.title,
-      text: "Check out this awesome page!",
+      title: bookTitle,
+      text: "Check out this book in the Hart Square library",
       url: window.location.href,
     });
   } catch (err) {

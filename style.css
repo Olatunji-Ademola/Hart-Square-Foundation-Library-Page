@@ -40,9 +40,13 @@
   display: flex;
   justify-content: space-between;
   padding: 20px 0px;
+  border-bottom: 1px solid rgba(var(--primary-color), 20%);
 }
 #book-details-page #header span {
   /* background-color: red; */
+  display: flex;
+  align-items: center;
+  gap: 10px;
   cursor: pointer;
 }
 #book-details-page #header p {
@@ -60,9 +64,12 @@
 }
 #title-author div {
   width: fit-content;
-  padding: 4px 15px;
-  border-radius: 2px;
+  padding: 5px 8px;
+  border-radius: 4px;
   font-size: 17px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
 }
 #title-author div p {
   font-weight: 500;
@@ -209,10 +216,11 @@
   border: 1px solid #0000;
 }
 #search-input-box > #icon {
-  margin: 0px 10px;
+  padding-left: 10px;
+  /* margin: 0px 10px;
   height: fit-content;
   width: 20px;
-  background-color: rgb(var(--primary-color));
+  background-color: rgb(var(--primary-color)); */
 }
 #search-input-box:focus-within {
   border: 1px solid rgba(var(--primary-color)) !important;
@@ -404,6 +412,7 @@ main {
 /* Books Section */
 .book {
   display: flex;
+  gap: 20px;
   justify-content: space-between;
   border-bottom: 1px rgba(var(--primary-color), 20%) solid;
   /* border-radius: 10px; */
@@ -416,10 +425,20 @@ main {
   margin: 2px;
 }
 .book > #data > #title {
+  display: flex;
+  align-items: center;
+  gap: 15px;
   font-family: "Gentium Plus", serif;
   font-size: 20px;
   font-weight: 600;
   cursor: pointer;
+}
+.book #title > h3 {
+  line-clamp: 1;
+  -webkit-line-clamp: 1;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 .book > #data > #title:hover {
   text-decoration: underline;
@@ -433,6 +452,37 @@ main {
   font-size: 14px;
 }
 
+/* loading */
+#loading-sceern {
+  display: flex;
+  flex-direction: column;
+  /* background-color: red; */
+  align-items: center;
+  width: 300px;
+  padding: 10px;
+  margin: auto;
+  margin-top: 100px;
+  gap: 20px;
+}
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+#loading-sceern > i {
+  font-size: 40px;
+  animation: spin 3s linear infinite;
+}
+#loading-sceern > p {
+  font-size: 15px;
+  padding: 3px 10px;
+  border-radius: 10px;
+  background-color: rgba(var(--primary-color), 10%);
+}
+/* global class */
 .checked {
   padding: 6px 12px;
   border-radius: 5px;
@@ -446,9 +496,15 @@ main {
   background-color: rgba(var(--red-color), 0.15);
   color: rgb(var(--red-color));
 }
+.checked-out > * {
+  color: rgb(var(--red-colo)) !important;
+}
 
 .checked-in {
   background-color: rgba(var(--green-color), 0.15) !important;
+  color: rgb(var(--green-color)) !important;
+}
+.checked-in > * {
   color: rgb(var(--green-color)) !important;
 }
 

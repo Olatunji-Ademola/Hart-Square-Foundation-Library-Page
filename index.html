@@ -11,6 +11,14 @@
       href="https://fonts.googleapis.com/css2?family=Gentium+Plus:ital,wght@0,400;0,700;1,400;1,700&family=Red+Hat+Text:ital,wght@0,300..700;1,300..700&display=swap"
       rel="stylesheet"
     />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
@@ -21,15 +29,27 @@
         <div>
           <!-- header -->
           <div id="header">
-            <span id="back-button"><p>Back to results</p></span>
-            <span id="share-button"><p>Share</p></span>
+            <!-- 
+            <i class="fa-regular fa-circle-xmark"></i> -->
+
+            <span id="back-button"
+              ><i class="fa-solid fa-arrow-left-long"></i>
+              <p>Back to results</p></span
+            >
+            <span id="share-button">
+              <i class="fa-solid fa-share-nodes"></i>
+              <p>Share</p></span
+            >
           </div>
           <!-- details books section -->
           <div>
             <div id="title-author">
               <h2 id="d-title">A Complete Guide to Pressed Glass</h2>
               <h3 id="d-author">by Bob H. Batty</h3>
-              <div id="d-isAvailable" class="checked-out"><p>Availlabe</p></div>
+              <div id="d-isAvailable" class="checked-out">
+                <i class="fa-regular fa-circle-xmark"></i>
+                <p>isAvailable</p>
+              </div>
             </div>
             <!-- more details -->
             <div id="more-details">
@@ -121,7 +141,7 @@
         <div id="search-section">
           <div id="search-box">
             <form id="search-input-box" onsubmit="event.preventDefault();">
-              <div id="icon">aa</div>
+              <i id="icon" class="fa-solid fa-magnifying-glass"></i>
               <input
                 id="search-input"
                 type="text"
@@ -131,8 +151,8 @@
             </form>
           </div>
           <div id="search-results">
-            <h2>Search Results for "potter"</h2>
-            <p>34 results found</p>
+            <h2>Total Books</h2>
+            <p>0 results found</p>
           </div>
         </div>
         <!-- main books section -->
@@ -145,17 +165,80 @@
                 <!-- Availbility -->
                 <div>
                   <h3>Availbility</h3>
-                  <ul id="availbility"></ul>
+                  <ul id="availbility">
+                    <li>
+                      <input type="checkbox" />
+                      <p>Available (0)</p>
+                    </li>
+                    <li>
+                      <input type="checkbox" />
+                      <p>Checked Out (0)</p>
+                    </li>
+                  </ul>
                 </div>
                 <!-- Location -->
                 <div>
                   <h3>Location</h3>
-                  <ul id="location"></ul>
+                  <ul id="location">
+                    <li>
+                      <input type="checkbox" />
+                      <p>Main Library (0)</p>
+                    </li>
+                    <li>
+                      <input type="checkbox" />
+                      <p>Children's Library (0)</p>
+                    </li>
+                    <li>
+                      <input type="checkbox" />
+                      <p>Audio Library (0)</p>
+                    </li>
+                  </ul>
                 </div>
                 <!-- Category -->
                 <div>
                   <h3>Category</h3>
-                  <ul id="category"></ul>
+                  <ul id="category">
+                    <li>
+                      <input type="checkbox" />
+                      <p>Category 1 (0)</p>
+                    </li>
+                    <li>
+                      <input type="checkbox" />
+                      <p>Category 2 (0)</p>
+                    </li>
+                    <li>
+                      <input type="checkbox" />
+                      <p>Category 3 (0)</p>
+                    </li>
+                    <li>
+                      <input type="checkbox" />
+                      <p>Category 4 (0)</p>
+                    </li>
+                    <li>
+                      <input type="checkbox" />
+                      <p>Category 5 (0)</p>
+                    </li>
+                    <li>
+                      <input type="checkbox" />
+                      <p>Category 6 (0)</p>
+                    </li>
+                    <li>
+                      <input type="checkbox" />
+                      <p>Category 7 (0)</p>
+                    </li>
+                    <li>
+                      <input type="checkbox" />
+                      <p>Category 8 (0)</p>
+                    </li>
+                    <li>
+                      <input type="checkbox" />
+                      <p>Category 9 (0)</p>
+                    </li>
+                    <li>
+                      <input type="checkbox" />
+                      <p>Category 10 (0)</p>
+                    </li>
+                  </ul>
                 </div>
               </div>
             </section>
@@ -164,6 +247,10 @@
           <!-- books display section -->
           <main>
             <div id="bookList">
+              <div id="loading-sceern">
+                <i class="fa-regular fa-hourglass"></i>
+                <p>Loading All Library Books...</p>
+              </div>
               <!-- add all books here -->
             </div>
             <div id="pagination">
@@ -178,7 +265,6 @@
   </body>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-  <!-- <script src="https://cdn.jsdelivr.net/npm/flexsearch@0.7.31/dist/flexsearch.bundle.min.js"></script> -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FlexSearch/0.7.31/flexsearch.bundle.min.js"></script>
   <script type="module" src="app.js"></script>
 </html>
