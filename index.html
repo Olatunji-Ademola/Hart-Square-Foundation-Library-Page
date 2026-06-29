@@ -24,14 +24,12 @@
   <body>
     <!-- make skeleton layout -->
     <div id="wrapper">
+      <div id="backdrop" class="disablePage"></div>
       <!-- Details Page -->
       <div id="book-details-page" class="disablePage">
         <div>
           <!-- header -->
           <div id="header">
-            <!-- 
-            <i class="fa-regular fa-circle-xmark"></i> -->
-
             <span id="back-button"
               ><i class="fa-solid fa-arrow-left-long"></i>
               <p>Back to results</p></span
@@ -102,34 +100,7 @@
           <div id="related-books">
             <h3>Related Books</h3>
             <ul id="d-related-books">
-              <!-- <li>
-                <p>Antiques & Collectibles</p>
-                <h3>The Title of the Book</h3>
-                <h4>by O. Ademola</h4>
-              </li>
-              <li>
-                <p>Antiques & Collectibles</p>
-                <h3>
-                  American and English Furniture and Decorations... (Brunk
-                  Auction Catalog, Jan. 2002)
-                </h3>
-                <h4>by O. Ademola</h4>
-              </li>
-              <li>
-                <p>Antiques & Collectibles</p>
-                <h3>The Title of the Book</h3>
-                <h4>by O. Ademola</h4>
-              </li>
-              <li>
-                <p>Antiques & Collectibles</p>
-                <h3>The Title of the Book</h3>
-                <h4>by O. Ademola</h4>
-              </li>
-              <li>
-                <p>Antiques & Collectibles</p>
-                <h3>The Title of the Book</h3>
-                <h4>by O. Ademola</h4>
-              </li> -->
+              <!-- display related books here -->
             </ul>
           </div>
         </div>
@@ -152,13 +123,16 @@
           </div>
           <div id="search-results">
             <h2>Total Books</h2>
+            <i id="filter-button" class="fa-solid fa-sliders"></i>
             <p>0 results found</p>
           </div>
         </div>
+
         <!-- main books section -->
         <div id="main">
           <!-- refine search result -->
           <aside id="filter">
+            <i id="filter-close-button" class="fa-solid fa-xmark"></i>
             <h3>Refine Results</h3>
             <section>
               <div>

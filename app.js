@@ -86,6 +86,11 @@ const refineIsAvailableList = document.getElementById("availbility");
 const refineLocationList = document.getElementById("location");
 const refineCategoryList = document.getElementById("category");
 
+const filterElement = document.getElementById("filter");
+const filterButton = document.getElementById("filter-button");
+const filterCloseButton = document.getElementById("filter-close-button");
+const backdropElement = document.getElementById("backdrop");
+
 let activeFilters = {
   location: [],
   category: [],
@@ -121,7 +126,27 @@ refinedSearchButton.onclick = function () {
     searchText,
     false
   );
+
+  //close the filter window mobile only
+  filterElement.classList.remove("showFilter");
+  backdropElement.classList.add("disablePage");
 };
+
+//show filter mobile only
+filterButton.addEventListener("click", function () {
+  filterElement.classList.add("showFilter");
+  backdropElement.classList.remove("disablePage");
+});
+
+//hide filter
+backdropElement.addEventListener("click", function () {
+  filterElement.classList.remove("showFilter");
+  backdropElement.classList.add("disablePage");
+});
+filterCloseButton.addEventListener("click", function () {
+  filterElement.classList.remove("showFilter");
+  backdropElement.classList.add("disablePage");
+});
 
 // On Navigate pen book detail page
 window.addEventListener("popstate", function () {

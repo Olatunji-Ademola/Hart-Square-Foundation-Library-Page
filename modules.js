@@ -67,7 +67,7 @@ function bookComponent(bookData) {
 </div>
   <div class="checked ${
     bookData["IsAvailable"] == "TRUE" ? `checked-in` : "checked-out"
-  }">${bookData["IsAvailable"] == "TRUE" ? "Available" : "Checked-Out"}</div>
+  }">${bookData["IsAvailable"] == "TRUE" ? "Available" : "Checked Out"}</div>
   </div>`;
   return component;
 }
