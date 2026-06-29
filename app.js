@@ -81,6 +81,7 @@ searchButton.onclick = function () {
 };
 
 // Refine Search
+const wrapperElement = document.getElementById("wrapper");
 const refinedSearchButton = document.getElementById("refined-search-button");
 const refineIsAvailableList = document.getElementById("availbility");
 const refineLocationList = document.getElementById("location");
@@ -96,7 +97,18 @@ let activeFilters = {
   category: [],
   isAvailable: [],
 };
+function closeFilterWindow() {
+  filterElement.classList.remove("showFilter");
+  backdropElement.classList.add("disablePage");
+  wrapperElement.classList.remove("stopScroll");
 
+  // scroll window to the top
+  window.scrollTo({
+    top: 0,
+    left: 0,
+    behavior: "smooth",
+  });
+}
 function getRefinedOption(parentElement) {
   let refineResult = [];
   let listElement = parentElement.getElementsByTagName("li");
@@ -128,27 +140,25 @@ refinedSearchButton.onclick = function () {
   );
 
   //close the filter window mobile only
-  filterElement.classList.remove("showFilter");
-  backdropElement.classList.add("disablePage");
+  closeFilterWindow();
 };
 
 //show filter mobile only
 filterButton.addEventListener("click", function () {
   filterElement.classList.add("showFilter");
   backdropElement.classList.remove("disablePage");
+  wrapperElement.classList.add("stopScroll"); // disables scroll on the main window
 });
 
 //hide filter
 backdropElement.addEventListener("click", function () {
-  filterElement.classList.remove("showFilter");
-  backdropElement.classList.add("disablePage");
+  closeFilterWindow();
 });
 filterCloseButton.addEventListener("click", function () {
-  filterElement.classList.remove("showFilter");
-  backdropElement.classList.add("disablePage");
+  closeFilterWindow();
 });
 
-// On Navigate pen book detail page
+// On Navigate open book detail page
 window.addEventListener("popstate", function () {
   ShowBookDetailsPage();
 });

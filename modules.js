@@ -128,6 +128,13 @@ function handelShowBookDetailsPage(BookList, tag) {
         history.pushState(null, "", newUrl);
 
         ShowBookDetailsPage();
+
+        // scroll window to the top
+        window.scrollTo({
+          top: 0,
+          left: 0,
+          behavior: "smooth",
+        });
       });
     }
   }
@@ -189,6 +196,13 @@ function DisplayPagination(pageIndex = 1) {
     if (goToPageIndex) {
       element.addEventListener("click", () => {
         DisplayPagination(parseInt(goToPageIndex));
+
+        // scroll window to the top
+        window.scrollTo({
+          top: 0,
+          left: 0,
+          behavior: "smooth",
+        });
       });
     }
   }

@@ -17,11 +17,6 @@
 }
 
 #wrapper {
-  /* when filter is opened mobile only */
-  /* max-height: 100vh;
-  overflow: hidden; */
-  /*  */
-
   min-height: 100vh;
   background-color: rgb(var(--background-color));
 }
@@ -570,6 +565,10 @@ main {
 @media screen and (max-width: 1024px) {
   .showFilter {
     transform: translateX(0%) !important;
+  }
+  .stopScroll {
+    max-height: 100vh;
+    overflow: hidden;
   }
 }
 @media (min-width: 640px) {
