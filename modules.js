@@ -66,8 +66,8 @@ function bookComponent(bookData) {
   <h4 id="Location">${bookData.Collection} - ${bookData.CatalogCode}</h4>
 </div>
   <div class="checked ${
-    bookData["IsAvailable"] == "TRUE" ? `checked-in` : "checked-out"
-  }">${bookData["IsAvailable"] == "TRUE" ? "Available" : "Checked Out"}</div>
+    bookData["CheckedOut"] == "TRUE" ? "checked-out" : `checked-in`
+  }">${bookData["CheckedOut"] == "TRUE" ? "Checked Out" : "Available"}</div>
   </div>`;
   return component;
 }
@@ -146,6 +146,14 @@ function DisplayPagination(pageIndex = 1) {
   let bookElement = booksData.length;
   let maxPageIndex = Math.ceil(bookElement / BookDisplayNumber);
 
+  // no book result
+  if (booksData.length == 0) {
+    console.log("No result");
+    BookList.innerHTML = "<p>No result found for this search!</p>";
+    PaginationParentElemet.innerHTML = "";
+    return;
+  }
+
   // if the pageIndex is greater then the maxPageIndex, set it to the maxPageIndex
   pageIndex = pageIndex > maxPageIndex ? maxPageIndex : pageIndex;
   // if the pageIndex is less then 0, set it to 1
@@ -162,7 +170,7 @@ function DisplayPagination(pageIndex = 1) {
   }
   BookList.innerHTML = bookListElement;
 
-  //Show more details for the book
+  // Show more details for the book
   handelShowBookDetailsPage(BookList, "h3");
 
   // Update Pagination
@@ -215,18 +223,19 @@ function refinedSearchElement(property, parent) {
     let isAvailableCondition = key == "TRUE" || key == "FALSE";
     let name = isAvailableCondition
       ? key == "TRUE"
-        ? "Available"
-        : "Checked Out"
+        ? "Checked Out"
+        : "Available"
       : key;
 
     elements += `<li>
-    <input checked type="checkbox" data-refine-value="${
+    <input type="checkbox" data-refine-value="${
       isAvailableCondition ? key : name
     }" />
     <p>${name} (${property[key]})</p>
     </li>`;
   }
-
+  // console.log("property");
+  if (Object.keys(property).length == 0) elements = "<li>- - - - - -</li>";
   parent.innerHTML = elements;
 }
 export async function getSheet() {
@@ -261,7 +270,7 @@ export function UpdateBookSearchResult(
   if (updateRefineParameter) {
     let Location = getPropertyCount(searchBookResult, "Collection");
     refinedSearchElement(Location, searchLocation);
-    let CheckedOut = getPropertyCount(searchBookResult, "IsAvailable");
+    let CheckedOut = getPropertyCount(searchBookResult, "CheckedOut");
     refinedSearchElement(CheckedOut, searchAvailbility);
     let Category = getPropertyCount(searchBookResult, "Category");
     refinedSearchElement(Category, searchCategory);
@@ -274,16 +283,16 @@ export function UpdateBookSearchResult(
 export function PerformRefinedSearch(activeFilters, searchResults) {
   return searchResults.filter((book) => {
     const hasLocationMatch =
-      activeFilters.location.length > 0 &&
+      activeFilters.location.length == 0 ||
       activeFilters.location.includes(book.Collection);
 
     const hasCategoryMatch =
-      activeFilters.category.length > 0 &&
+      activeFilters.category.length == 0 ||
       activeFilters.category.includes(book.Category);
 
     const hasAvailabilityMatch =
-      activeFilters.isAvailable.length > 0 &&
-      activeFilters.isAvailable.includes(book.IsAvailable);
+      activeFilters.isAvailable.length == 0 ||
+      activeFilters.isAvailable.includes(book.CheckedOut);
 
     return hasLocationMatch && hasCategoryMatch && hasAvailabilityMatch;
   });
@@ -307,13 +316,13 @@ export function ShowBookDetailsPage(BookMapData) {
     detailsTitle.innerText = bookData.Title;
     detailsAuthor.innerText = bookData.Author;
     detailsIsAvaliable.className =
-      bookData.IsAvailable == "TRUE" ? "checked-in" : "checked-out";
+      bookData.CheckedOut == "TRUE" ? "checked-out" : "checked-in";
     detailsIsAvaliable.innerHTML =
-      bookData.IsAvailable == "TRUE"
-        ? `<i class="fa-regular fa-circle-check"></i>
-      <p>Available</p>`
-        : `<i class="fa-regular fa-circle-xmark"></i>
-        <p>Checked Out</p>`;
+      bookData.CheckedOut == "TRUE"
+        ? `<i class="fa-regular fa-circle-xmark"></i>
+        <p>Checked Out</p>`
+        : `<i class="fa-regular fa-circle-check"></i>
+        <p>Available</p>`;
 
     // more details (location, category, catalog code, donor, condition, description)
     detailsLocation.innerText = bookData.Collection;

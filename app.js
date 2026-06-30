@@ -4,11 +4,6 @@ import {
   UpdateBookSearchResult,
   ShowBookDetailsPage,
 } from "./modules.js";
-// import {
-//   get,
-//   set,
-//   createStore,
-// } from "https://cdn.jsdelivr.net/npm/idb-keyval@6/+esm";
 
 const searchIndex = new FlexSearch.Document({
   document: {
@@ -23,13 +18,7 @@ let GlobalBookMapData;
 let BookSearchResult = [];
 let searchText = "";
 
-// get save data (indexDB)
-// const customStore = createStore("hart-square-library-database", "key-store");
-let lastUpdated = false; // await get("lastUpdated", customStore);
-
-// have a Saved data
-if (lastUpdated) {
-} else {
+async function init() {
   // library sheet book data
   GlobalBookData = await getSheet();
 
@@ -50,6 +39,8 @@ if (lastUpdated) {
   // opem book details page on load
   ShowBookDetailsPage(GlobalBookMapData);
 }
+
+init();
 
 // Search Query
 // get the search textinput

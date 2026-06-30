@@ -451,6 +451,11 @@ main {
   border: none !important;
 }
 /* Books Section */
+#bookList > p {
+  margin-top: 100px;
+  text-align: center;
+  font-size: 17px;
+}
 .book {
   display: flex;
   gap: 10px;
