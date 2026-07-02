@@ -45,6 +45,12 @@ init();
 // Search Query
 // get the search textinput
 let searchTextInput = document.getElementById("search-input");
+// get the clear search button
+let clearSearchButton = document.getElementById("clear-search");
+clearSearchButton.onclick = function () {
+  searchTextInput.value = "";
+  searchTextInput.focus();
+};
 // get the search button
 let searchButton = document.getElementById("search-button");
 searchButton.onclick = function () {

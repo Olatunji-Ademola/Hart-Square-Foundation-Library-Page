@@ -216,9 +216,11 @@
   justify-content: center;
   padding: 8px 16px;
 }
+
 #search-box > #search-input-box {
   flex: 1;
   display: flex;
+  gap: 10px;
   flex-direction: row;
   align-items: center;
   background-color: rgba(var(--primary-color), 10%);
@@ -230,6 +232,7 @@
 #search-input-box:focus-within {
   border: 1px solid rgba(var(--primary-color)) !important;
 }
+
 #search-input {
   height: 40px;
   flex: 1;
@@ -242,6 +245,14 @@
 }
 #search-input:focus {
   border-color: rgb(var(--primary-color));
+}
+#clear-search {
+  cursor: pointer;
+  visibility: hidden;
+}
+
+#search-input:not(:placeholder-shown) + #clear-search {
+  visibility: visible;
 }
 #search-button {
   cursor: pointer;
