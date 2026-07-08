@@ -17,7 +17,7 @@ const detailsIsAvaliable = document.getElementById("d-isAvailable");
 const detailsLocation = document.getElementById("d-location");
 const detailsCategory = document.getElementById("d-category");
 const detailsCatalogCode = document.getElementById("d-catalog-code");
-const detailsDonor = document.getElementById("d-donor");
+// const detailsDonor = document.getElementById("d-donor");
 const detailsCondition = document.getElementById("d-condition");
 const detailsLocationLocation = document.getElementById("d-l-location");
 const detailsLocationSection = document.getElementById("d-l-section");
@@ -328,7 +328,7 @@ export function ShowBookDetailsPage(BookMapData) {
     detailsLocation.innerText = bookData.Collection;
     detailsCategory.innerText = bookData.Category;
     detailsCatalogCode.innerText = bookData.CatalogCode;
-    detailsDonor.innerText = bookData.Donor;
+    // detailsDonor.innerText = bookData.Donor;
     detailsCondition.innerText = bookData.Condition;
     detailsDescription.innerText = bookData.Notes;
 
